@@ -4,18 +4,65 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public static AudioClip winClip, lossClip, beginClip, coinClip, speedClip, joinAClip, joinBClip;
+
     static AudioSource audioSource;
+    public static AudioClip winClip, lossClip, beginClip, coinClip, speedClip, popClip, joinAClip, joinBClip;
+    public float volume = 0.5f;
+	public static int joinCount = 0;
 
     // Start is called before the first frame update
-    void Start()    
+    void Start()
     {
         
+        winClip = Resources.Load<AudioClip>("wintrim");
+        lossClip = Resources.Load<AudioClip>("losstrim");
+        //beginClip = Resources.Load<AudioClip>("open");
+        speedClip = Resources.Load<AudioClip>("speedtrim");
+        coinClip = Resources.Load<AudioClip>("cointrim");
+        joinAClip = Resources.Load<AudioClip>("join-a");
+        joinBClip = Resources.Load<AudioClip>("join-b");
+		popClip = Resources.Load<AudioClip>("pop");
+        audioSource = GetComponent<AudioSource>();
+        //audioSource.PlayOneShot(winClip);
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void playWinSound()
     {
-        
+        audioSource.PlayOneShot(winClip);
     }
+	public static void playPopSound()
+    {
+        audioSource.PlayOneShot(popClip);
+    }
+
+    public static void playLossSound()
+    {
+        audioSource.PlayOneShot(lossClip);
+    }
+    public static void playBeginSound()
+    {
+       // audioSource.PlayOneShot(beginClip);
+    }
+    public static void playCoinSound()
+    {
+        audioSource.PlayOneShot(coinClip);
+    }
+    public static void playSpeedSound()
+    {
+        audioSource.PlayOneShot(speedClip);
+    }
+
+    public static void playJoinSound()
+    {
+		if (joinCount%2==0)
+			audioSource.PlayOneShot(joinAClip);
+		else
+			audioSource.PlayOneShot(joinBClip);
+		joinCount++;
+    }
+    public static void playJoinBSound()
+    {
+        audioSource.PlayOneShot(joinBClip);
+    }
+
 }
