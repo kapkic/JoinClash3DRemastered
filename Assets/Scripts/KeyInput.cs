@@ -34,6 +34,11 @@ public class KeyInput : MonoBehaviour
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
 
         rb.AddForce(movement * speed);
+
+        if (rb.position.y < -1f)
+        {
+            FindObjectOfType<GameManager>().EndGame();
+        }
     }
 
  }
