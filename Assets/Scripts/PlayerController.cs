@@ -5,11 +5,16 @@ using UnityEngine.InputSystem;
 using TMPro;
 using System;
 
+using UnityEngine.SceneManagement;
+
 public class PlayerController : MonoBehaviour
 {
 	public float speed = 0;
 	private bool join = false; 
 	private int count;
+	private bool boost, won;
+	private bool runbefore=true;
+	int timer;
 	//public TextMeshProUGUI countText, speedText;
 	//public GameObject winTextObject, lossTextObject;
 
@@ -47,7 +52,9 @@ public class PlayerController : MonoBehaviour
     }
 	
 	void setWin(){
-	SoundManager.playWinSound();
+
+	
+	
 	}
 
 	void SetSpeedText()
@@ -79,7 +86,21 @@ public class PlayerController : MonoBehaviour
 	{
 		Vector3 movement = new Vector3(movementX, 0.0f, movementY);
 		rb.AddForce(movement * speed);
-		SetSpeedText();
+		
+		if (boost)
+		{
+			timer++;
+            if (timer<150)
+            {
+                speed+= 10;
+            }
+			timer=0;
+			boost=false;
+		}
+		if (rb.position.y < -1f)
+        {
+           FindObjectOfType<GameManager>().EndGame();
+        }
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -94,7 +115,7 @@ public class PlayerController : MonoBehaviour
 		else if (other.gameObject.CompareTag("Speed"))
 		{
 			other.gameObject.SetActive(false);
-			speed += 10;
+			boost=true;
 			SoundManager.playSpeedSound();
 
 		}
@@ -117,6 +138,8 @@ public class PlayerController : MonoBehaviour
 		if (other.gameObject.CompareTag("BossStep"))
         {
 			//setFight
+			other.gameObject.SetActive(false);
+			won=true;
 			setWin();		
         }
 	}
@@ -127,5 +150,22 @@ public class PlayerController : MonoBehaviour
     {
 
 		transform.rotation = Input.gyro.attitude;
+		
+		//can make it a separate script.
+	
+	if (won && runbefore){
+	runbefore=false;
+	SoundManager.playWinSound();
+	Scene scene = SceneManager.GetActiveScene();
+	won=false;
+	if (scene.name == "Level2")
+	SceneManager.LoadScene("Level3", LoadSceneMode.Additive);
+	else if (scene.name == "Level3"){}
+	else if (scene.name == "Level1")
+	SceneManager.LoadScene("Level2", LoadSceneMode.Additive);
+	
+	}
+	//SceneManager.LoadScene("WinLevel", LoadSceneMode.Additive);
+	
 	}
 }
