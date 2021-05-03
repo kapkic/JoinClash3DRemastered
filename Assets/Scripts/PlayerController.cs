@@ -12,10 +12,10 @@ public class PlayerController : MonoBehaviour
 	public float speed = 0;
 	private bool join = false; 
 	private int count;
-	private bool boost, won;
+	private bool boost, won, jump;
 	private bool runbefore=true;
 	int timer;
-	//public TextMeshProUGUI countText, speedText;
+	public TextMeshProUGUI countText;
 	//public GameObject winTextObject, lossTextObject;
 
 	private Rigidbody rb;
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
 	void SetCountText()
     {
-		//countText.text = "Count: " + count.ToString();
+		countText.text = count.ToString();
 		if (count > 4)
         {
 			//winTextObject.SetActive(true);
@@ -66,6 +66,11 @@ public class PlayerController : MonoBehaviour
 	{
 		SoundManager.playJoinSound();
 	}
+	
+	void setJump()
+	{
+		SoundManager.playJumpSound();
+	}
 
 	void setGameOver()
 	{
@@ -86,6 +91,18 @@ public class PlayerController : MonoBehaviour
 	{
 		Vector3 movement = new Vector3(movementX, 0.0f, movementY);
 		rb.AddForce(movement * speed);
+		
+		if (jump)
+		{
+/*			timer++;
+            if (timer<5)
+            {*/
+                Vector3 movement2 = new Vector3(0.0f, 600.0f, 50.0f);
+				rb.AddForce(movement2);
+            /*}
+			timer=0;*/
+			jump=false;
+		}
 		
 		if (boost)
 		{
@@ -135,6 +152,11 @@ public class PlayerController : MonoBehaviour
         {
 			setJoin();		
         }
+		if (other.gameObject.CompareTag("Ramp"))
+        {
+			setJump();
+			jump=true;
+        }
 		if (other.gameObject.CompareTag("BossStep"))
         {
 			//setFight
@@ -159,10 +181,10 @@ public class PlayerController : MonoBehaviour
 	Scene scene = SceneManager.GetActiveScene();
 	won=false;
 	if (scene.name == "Level2")
-	SceneManager.LoadScene("Level3", LoadSceneMode.Additive);
+	SceneManager.LoadScene("Level3");
 	else if (scene.name == "Level3"){}
 	else if (scene.name == "Level1")
-	SceneManager.LoadScene("Level2", LoadSceneMode.Additive);
+	SceneManager.LoadScene("Level2"	);
 	
 	}
 	//SceneManager.LoadScene("WinLevel", LoadSceneMode.Additive);

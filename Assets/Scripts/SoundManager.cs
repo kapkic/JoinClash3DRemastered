@@ -6,7 +6,7 @@ public class SoundManager : MonoBehaviour
 {
 
     static AudioSource audioSource;
-    public static AudioClip winClip, lossClip, beginClip, coinClip, speedClip, popClip, joinAClip, joinBClip;
+    public static AudioClip winClip, lossClip, beginClip, coinClip, speedClip, popClip, joinAClip, joinBClip, jumpClip;
     public float volume = 0.5f;
 	public static int joinCount = 0;
 
@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
         joinAClip = Resources.Load<AudioClip>("join-a");
         joinBClip = Resources.Load<AudioClip>("join-b");
 		popClip = Resources.Load<AudioClip>("pop");
+		jumpClip = Resources.Load<AudioClip>("jump");
         audioSource = GetComponent<AudioSource>();
         //audioSource.PlayOneShot(winClip);
     }
@@ -29,6 +30,10 @@ public class SoundManager : MonoBehaviour
     public static void playWinSound()
     {
         audioSource.PlayOneShot(winClip);
+    }
+	public static void playJumpSound()
+    {
+        audioSource.PlayOneShot(jumpClip);
     }
 	public static void playPopSound()
     {
