@@ -8,20 +8,22 @@ public class CollisionCopyMovement : MonoBehaviour
 
     private Rigidbody rb;
 
+    private GameObject dummyObj;
     private GameObject enemyObj;
-    private bool collidedAlly;
+    private bool collidedPlayer;
+    private bool collidedDummy;
     private bool collidedEnemy;
     private Vector3 enemyPos;
     private Vector3 dummyPos;
-    private Vector3 enemyDir;
     private Vector3 dummyDir;
-    private Vector3 afterCol = new Vector3(1,2,1);
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        collidedAlly = false;
+        collidedPlayer = false;
+        collidedDummy = false;
+        collidedEnemy = false;
     }
 
 
@@ -30,13 +32,20 @@ public class CollisionCopyMovement : MonoBehaviour
         if (collision.gameObject.name == "Enemy")
         {
             collidedEnemy = true;
-            collidedAlly = false;
+            collidedPlayer = false;
+            collidedDummy = false;
             enemyObj = collision.gameObject;
         }
 
-        if (collidedEnemy == false && collision.gameObject.name == "Player" || collision.gameObject.name == "Dummy")
+        if (collidedEnemy == false && collision.gameObject.name == "Player")
         {
-            collidedAlly = true;
+            collidedPlayer = true;
+        }
+
+        if (collidedEnemy == false && collidedPlayer == false && collision.gameObject.name == "Dummy")
+        {
+            dummyObj = collision.gameObject;
+            collidedDummy = true;
         }
 
     }
@@ -45,20 +54,20 @@ public class CollisionCopyMovement : MonoBehaviour
     {
         if (collidedEnemy == true)
         {
-            enemyObj.GetComponent<BoxCollider>().size = afterCol;
-            dummyPos = rb.position;
             enemyPos = enemyObj.GetComponent<Rigidbody>().position;
+            dummyPos = rb.position;
             dummyDir = enemyPos - dummyPos;
             dummyDir.Normalize();
-            enemyDir = dummyPos - enemyPos;
-            enemyDir.Normalize();
             rb.velocity = dummyDir * 2;
-            enemyObj.GetComponent<Rigidbody>().velocity = enemyDir * 2;
         }
 
-        if (collidedAlly == true)
+        if (collidedPlayer == true)
         {
             rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
+        }
+        else if (collidedDummy == true)
+        {
+            rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
         }
 
     }
