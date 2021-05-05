@@ -26,7 +26,18 @@ public class CollisionCopyMovement : MonoBehaviour
         {
             collided = true;
         }
+
+        if (collision.gameObject.tag == "Obstacle")
+        {
+            Destroy();
+        }
     }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
+
 
     private void FixedUpdate()
     {
