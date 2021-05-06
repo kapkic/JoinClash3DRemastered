@@ -808,6 +808,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2536282291702727524, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
+      propertyPath: gravity
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536282291702727524, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
       propertyPath: countText
       value: 
       objectReference: {fileID: 100608044}
@@ -833,7 +837,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7270379898052330773, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7270379898052330773, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
       propertyPath: m_LocalRotation.x
@@ -841,7 +845,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7270379898052330773, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7270379898052330773, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
       propertyPath: m_LocalRotation.z
@@ -853,7 +857,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7270379898052330773, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7270379898052330773, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1331,7 +1335,7 @@ GameObject:
   - component: {fileID: 542117096}
   m_Layer: 0
   m_Name: Enemies
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2363,7 +2367,7 @@ GameObject:
   - component: {fileID: 1085268491}
   m_Layer: 0
   m_Name: Pickups
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2767,7 +2771,7 @@ GameObject:
   - component: {fileID: 1215303408}
   m_Layer: 0
   m_Name: Dummies
-  m_TagString: Untagged
+  m_TagString: Ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2923,6 +2927,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1335478204509702177, guid: 3aade6a87bf840e4bb6c688e0ed80fbc, type: 3}
   m_PrefabInstance: {fileID: 428793180}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1479717431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7279273819827961439, guid: 3ce62107fdd754740a324b6d03ad68b5, type: 3}
+  m_PrefabInstance: {fileID: 203256444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1479717436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479717431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc51d7cbf8171564bbba1159c8c8ee1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1512407427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3187,7 +3208,7 @@ GameObject:
   - component: {fileID: 1714240212}
   m_Layer: 0
   m_Name: Blocks
-  m_TagString: Untagged
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3514,7 +3535,7 @@ GameObject:
   - component: {fileID: 1935530261}
   m_Layer: 0
   m_Name: Saws
-  m_TagString: Untagged
+  m_TagString: Saw
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

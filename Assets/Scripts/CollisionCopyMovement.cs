@@ -39,8 +39,21 @@ public class CollisionCopyMovement : MonoBehaviour
 			setJoin();
         }
 
-		
+        if (collision.gameObject.tag == "Saw")
+        {
+            Destroy();
+        }
+        if (collision.gameObject.tag == "Block")
+        {
+            Destroy();
+        }
     }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
+
 	void OnTriggerEnter(Collider other)
 	{
 		if(other.gameObject.CompareTag("Coin"))
@@ -73,9 +86,10 @@ public class CollisionCopyMovement : MonoBehaviour
         {
 			setJoin();		
         }
-	}
+    }
 	
-	void setDie()
+
+void setDie()
 	{
 		//lossTextObject.SetActive(true);
 		SoundManager.playPopSound();
