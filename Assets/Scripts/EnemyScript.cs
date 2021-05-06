@@ -4,38 +4,57 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    public GameObject playerObj;
+    private GameObject[] enemyArr;
+    private GameObject enemyObj;
+    private GameObject dummyObj;
 
     private Rigidbody rb;
 
-    private float movSpeed;
-    private bool collided;
-    private Vector3 movDir;
+    private bool collidedAlly;
+
+    private Vector3 dummyPos;
+    private Vector3 myPos;
+    private Vector3 myDir;
 
     // Start is called before the first frame update
     void Start()
     {
+        enemyArr = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject x in enemyArr)
+        {
+            Physics.IgnoreCollision(x.GetComponent<Collider>(), GetComponent<Collider>());
+        }
         rb = GetComponent<Rigidbody>();
-        collided = false;
+        collidedAlly = false;
     }
 
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Player" || collision.gameObject.name == "Dummy")
+        if (collision.gameObject.name == "Dummy")
         {
-            collided = true;
+            collidedAlly = true;
+            dummyObj = collision.gameObject;
+        }
+
+        if (collision.gameObject.name == "Enemy")
+        {
+            enemyObj = collision.gameObject;
+            Physics.IgnoreCollision(enemyObj.GetComponent<Collider>(), GetComponent<Collider>());
         }
     }
 
     private void FixedUpdate()
     {
-        if (collided == true)
+        if (collidedAlly == true)
         {
-            //movSpeed = playerObj.GetComponent<Rigidbody>().velocity.magnitude;
-            //movDir = playerObj.GetComponent<Rigidbody>().velocity.normalized;
-            //playerObj.GetComponent<Rigidbody>().
-            rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
+            GetComponent<BoxCollider>().size = new Vector3(1, 2, 1);
+            dummyPos = dummyObj.GetComponent<Rigidbody>().position;
+            myPos = rb.position;
+            myDir = dummyPos - myPos;
+            myDir.Normalize();
+            rb.velocity = myDir * 2;
         }
     }
 }
