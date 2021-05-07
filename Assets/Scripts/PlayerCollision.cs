@@ -4,7 +4,7 @@ public class PlayerCollision : MonoBehaviour
 {
 
     public PlayerController movement;
-    //public GameManager gameManager;
+    private GameManager gameManager;
 
     private void OnCollisionEnter(Collision collisionInfo)
     {
@@ -12,7 +12,7 @@ public class PlayerCollision : MonoBehaviour
         {
             movement.enabled = false;
             FindObjectOfType<GameManager>().EndGame();
-			//add gameover
+            
         }
     }
 }
