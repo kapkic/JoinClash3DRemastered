@@ -14,13 +14,9 @@ public class CollisionCopyMovement : MonoBehaviour
     private GameObject dummyObj;
     private GameObject enemyObj;
 
-    private SkinnedMeshRenderer dummyRend;
-    private SkinnedMeshRenderer playeRend;
-
     private bool collidedPlayer;
     private bool collidedDummy;
     private bool collidedEnemy;
-    private bool collided;
 
     private Vector3 enemyPos;
     private Vector3 dummyPos;
@@ -33,18 +29,17 @@ public class CollisionCopyMovement : MonoBehaviour
         collidedPlayer = false;
         collidedDummy = false;
         collidedEnemy = false;
-        collided = false;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-       if (collision.gameObject.name == "Enemy")
+       /*if (collision.gameObject.name == "Enemy")      TODO: REMOVE THIS IF THERE ARE NO PROBLEMS
         {
             collidedEnemy = true;
             collidedPlayer = false;
             collidedDummy = false;
             enemyObj = collision.gameObject;
-        }
+        }*/
 
        //If collided with enemy, ignore other collisions from that point.
        if(collidedEnemy == false)
@@ -83,8 +78,13 @@ public class CollisionCopyMovement : MonoBehaviour
         }
         else if (collidedDummy == true)
         {
+            Color a,b;
             rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
-            if(dummyObj.GetComponent<CollisionCopyMovement>().collidedPlayer == true)
+
+            a = GetComponentInChildren<SkinnedMeshRenderer>().material.color;
+            b = dummyObj.GetComponentInChildren<SkinnedMeshRenderer>().material.color;
+
+            if (!a.Equals(b))
             {
                 GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
             }
@@ -93,7 +93,15 @@ public class CollisionCopyMovement : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.CompareTag("Coin"))
+        if (other.gameObject.name == "Enemy")
+        {
+            collidedEnemy = true;
+            collidedPlayer = false;
+            collidedDummy = false;
+            enemyObj = other.gameObject;
+        }
+
+        if (other.gameObject.CompareTag("Coin"))
 		{
 			other.gameObject.SetActive(false);
 			//count++; increase total count

@@ -32,11 +32,11 @@ public class EnemyScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Dummy")
+        /*if (collision.gameObject.name == "Dummy")         TODO:Remove if no problems
         {
             collidedAlly = true;
             dummyObj = collision.gameObject;
-        }
+        }*/
 
         if (collision.gameObject.name == "Enemy")
         {
@@ -45,11 +45,22 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "Dummy")
+        {
+            GetComponent<BoxCollider>().enabled = false;
+            collidedAlly = true;
+            dummyObj = other.gameObject;
+        }
+    }
+
     private void FixedUpdate()
     {
         if (collidedAlly == true)
         {
-            GetComponent<BoxCollider>().size = new Vector3(1, 2, 1);
+            //GetComponent<BoxCollider>().size = new Vector3(1, 2, 1);      TODO: Remove this line if no problems occur.
+            
             dummyPos = dummyObj.GetComponent<Rigidbody>().position;
             myPos = rb.position;
             myDir = dummyPos - myPos;

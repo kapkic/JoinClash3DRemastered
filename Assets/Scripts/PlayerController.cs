@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
 	public float speed = 0;
-	private bool join = false; 
+	//private bool join = false; 
 	private int count;
 	private bool boost, won, jump;
 	private bool runbefore=true;
