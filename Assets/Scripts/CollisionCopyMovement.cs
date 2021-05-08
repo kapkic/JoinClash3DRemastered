@@ -6,10 +6,16 @@ public class CollisionCopyMovement : MonoBehaviour
 {
     public GameObject playerObj;
 
+    public Material blue;
+    public Material empty;
+
     private Rigidbody rb;
 
     private GameObject dummyObj;
     private GameObject enemyObj;
+
+    private SkinnedMeshRenderer dummyRend;
+    private SkinnedMeshRenderer playeRend;
 
     private bool collidedPlayer;
     private bool collidedDummy;
@@ -41,7 +47,8 @@ public class CollisionCopyMovement : MonoBehaviour
         if (collidedEnemy == false && collision.gameObject.name == "Player")
         {
             collidedPlayer = true;
-			setJoin();
+            GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
+            setJoin();
         }
 
         if (collidedEnemy == false && collidedPlayer == false && collision.gameObject.name == "Dummy")
@@ -70,6 +77,11 @@ public class CollisionCopyMovement : MonoBehaviour
         else if (collidedDummy == true)
         {
             rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
+            if(dummyObj.GetComponent<CollisionCopyMovement>().collidedPlayer == true)
+            {
+                Debug.Log("Entered");
+                GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
+            }
         }
     }
 
