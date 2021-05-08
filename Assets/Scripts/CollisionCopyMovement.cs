@@ -20,6 +20,7 @@ public class CollisionCopyMovement : MonoBehaviour
     private bool collidedPlayer;
     private bool collidedDummy;
     private bool collidedEnemy;
+    private bool collided;
 
     private Vector3 enemyPos;
     private Vector3 dummyPos;
@@ -32,6 +33,7 @@ public class CollisionCopyMovement : MonoBehaviour
         collidedPlayer = false;
         collidedDummy = false;
         collidedEnemy = false;
+        collided = false;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -44,19 +46,23 @@ public class CollisionCopyMovement : MonoBehaviour
             enemyObj = collision.gameObject;
         }
 
-        if (collidedEnemy == false && collision.gameObject.name == "Player")
-        {
-            collidedPlayer = true;
-            GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
-            setJoin();
-        }
+       //If collided with enemy, ignore other collisions from that point.
+       if(collidedEnemy == false)
+       {
+            if (collision.gameObject.name == "Player")
+            {
+                collidedPlayer = true;
+                collidedDummy = false;
+                setJoin();
+            }
 
-        if (collidedEnemy == false && collidedPlayer == false && collision.gameObject.name == "Dummy")
-        {
-            dummyObj = collision.gameObject;
-            collidedDummy = true;
-            setJoin();
-        }
+            if (collidedPlayer == false && collision.gameObject.name == "Dummy")
+            {
+                dummyObj = collision.gameObject;
+                collidedDummy = true;
+                setJoin();
+            }
+       }
     }
 
     private void FixedUpdate()
@@ -73,13 +79,13 @@ public class CollisionCopyMovement : MonoBehaviour
         if (collidedPlayer == true)
         {
             rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
+            GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
         }
         else if (collidedDummy == true)
         {
             rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
             if(dummyObj.GetComponent<CollisionCopyMovement>().collidedPlayer == true)
             {
-                Debug.Log("Entered");
                 GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
             }
         }
