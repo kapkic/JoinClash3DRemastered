@@ -29,20 +29,20 @@ public class SoundManager : MonoBehaviour
 
     public static void playWinSound()
     {
-        audioSource.PlayOneShot(winClip);
+   //     audioSource.PlayOneShot(winClip);
     }
 	public static void playJumpSound()
     {
-        audioSource.PlayOneShot(jumpClip);
+     //   audioSource.PlayOneShot(jumpClip);
     }
 	public static void playPopSound()
     {
-        audioSource.PlayOneShot(popClip);
+       // audioSource.PlayOneShot(popClip);
     }
 
     public static void playLossSound()
     {
-        audioSource.PlayOneShot(lossClip);
+        //audioSource.PlayOneShot(lossClip);
     }
     public static void playBeginSound()
     {
@@ -50,24 +50,24 @@ public class SoundManager : MonoBehaviour
     }
     public static void playCoinSound()
     {
-        audioSource.PlayOneShot(coinClip);
+        //audioSource.PlayOneShot(coinClip);
     }
     public static void playSpeedSound()
     {
-        audioSource.PlayOneShot(speedClip);
+        //audioSource.PlayOneShot(speedClip);
     }
 
     public static void playJoinSound()
     {
-		if (joinCount%2==0)
+	/*	if (joinCount%2==0)
 			audioSource.PlayOneShot(joinAClip);
 		else
 			audioSource.PlayOneShot(joinBClip);
-		joinCount++;
+		joinCount++;*/
     }
     public static void playJoinBSound()
     {
-        audioSource.PlayOneShot(joinBClip);
+     //   audioSource.PlayOneShot(joinBClip);
     }
 
 }
