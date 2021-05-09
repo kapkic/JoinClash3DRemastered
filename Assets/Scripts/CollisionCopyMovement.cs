@@ -116,9 +116,13 @@ public class CollisionCopyMovement : MonoBehaviour
         {
 			setDie();
         }
-		if (other.gameObject.CompareTag("Enemy"))
+		if (other.gameObject.CompareTag("Block"))
         {
 			setDie();
+        }
+		if (other.gameObject.CompareTag("Enemy"))
+        {
+			//setDie();
         }
 		if (other.gameObject.CompareTag("Dummy"))
         {
@@ -130,6 +134,7 @@ public class CollisionCopyMovement : MonoBehaviour
 	{
 		//lossTextObject.SetActive(true);
 		SoundManager.playPopSound();
+		Destroy(gameObject);
 		//if all dies
 		//setGameOver();
 	}

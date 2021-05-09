@@ -12,11 +12,12 @@ public class PlayerController : MonoBehaviour
 	public float speed = 0;
 	//private bool join = false; 
 	private int count;
-	private bool boost, won, jump;
+	private bool boost, won, jump,fighting;
 	private bool runbefore=true;
 	int timer;
 	public TextMeshProUGUI countText;
-	//public GameObject winTextObject, lossTextObject;
+
+	public BossHP hp2;
 
 	private Rigidbody rb;
 	private float movementX, movementY;
@@ -37,6 +38,8 @@ public class PlayerController : MonoBehaviour
 		Vector2 movementVector = movementValue.Get<Vector2>();
 		movementX = movementVector.x;
 		movementY = movementVector.y;
+		if (movementY<0)
+		movementY=0;
 		
 		
 	}
@@ -53,8 +56,14 @@ public class PlayerController : MonoBehaviour
 	
 	void setWin(){
 
-	
-	
+	SoundManager.playWinSound();
+	Scene scene = SceneManager.GetActiveScene();
+	won=false;
+	if (scene.name == "Level2")
+	SceneManager.LoadScene("Level3");
+	else if (scene.name == "Level3"){}
+	else if (scene.name == "Level1")
+	SceneManager.LoadScene("Level2"	);
 	}
 
 	void SetSpeedText()
@@ -82,6 +91,7 @@ public class PlayerController : MonoBehaviour
 	{
 		//lossTextObject.SetActive(true);
 		SoundManager.playPopSound();
+		BossHP.setInactive();
 		//if all dies
 		//setGameOver();
 	}
@@ -159,11 +169,21 @@ public class PlayerController : MonoBehaviour
         }
 		if (other.gameObject.CompareTag("BossStep"))
         {
-			//setFight
-			other.gameObject.SetActive(false);
-			won=true;
-			setWin();		
+		//setFight
+		//other.gameObject.SetActive(false);
+		BossHP.setActive();
+		setFight();			
         }
+		if (other.gameObject.CompareTag("WinStep"))
+		{
+		//won=true;
+		Invoke("setWin", 5.0f);	
+		}
+	}
+	void setFight()
+	{
+		fighting=true;
+		
 	}
 
 
@@ -174,8 +194,13 @@ public class PlayerController : MonoBehaviour
 		transform.rotation = Input.gyro.attitude;
 		
 		//can make it a separate script.
+	if (fighting)
+	{
+		hp2.takeDamage(1);
+		//fighting=false;
+	}
 	
-	if (won && runbefore){
+	/*if (won && runbefore){
 	runbefore=false;
 	SoundManager.playWinSound();
 	Scene scene = SceneManager.GetActiveScene();
@@ -185,8 +210,7 @@ public class PlayerController : MonoBehaviour
 	else if (scene.name == "Level3"){}
 	else if (scene.name == "Level1")
 	SceneManager.LoadScene("Level2"	);
-	
-	}
+	}*/
 	//SceneManager.LoadScene("WinLevel", LoadSceneMode.Additive);
 	
 	}
