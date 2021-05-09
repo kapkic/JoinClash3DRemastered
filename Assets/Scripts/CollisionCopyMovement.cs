@@ -33,31 +33,7 @@ public class CollisionCopyMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-       /*if (collision.gameObject.name == "Enemy")      TODO: REMOVE THIS IF THERE ARE NO PROBLEMS
-        {
-            collidedEnemy = true;
-            collidedPlayer = false;
-            collidedDummy = false;
-            enemyObj = collision.gameObject;
-        }*/
-
-       //If collided with enemy, ignore other collisions from that point.
-       if(collidedEnemy == false)
-       {
-            if (collision.gameObject.name == "Player")
-            {
-                collidedPlayer = true;
-                collidedDummy = false;
-                setJoin();
-            }
-
-            if (collidedPlayer == false && collision.gameObject.name == "Dummy")
-            {
-                dummyObj = collision.gameObject;
-                collidedDummy = true;
-                setJoin();
-            }
-       }
+       
     }
 
     private void FixedUpdate()
@@ -99,6 +75,24 @@ public class CollisionCopyMovement : MonoBehaviour
             collidedPlayer = false;
             collidedDummy = false;
             enemyObj = other.gameObject;
+        }
+
+        if (collidedEnemy == false)
+        {
+            if (other.gameObject.name == "Player")
+            {
+                collidedPlayer = true;
+                collidedDummy = false;
+                setJoin();
+            }
+
+            if (collidedPlayer == false && other.gameObject.name == "Dummy")
+            {
+                Debug.Log("AAAAAAAAAAA");
+                dummyObj = other.gameObject;
+                collidedDummy = true;
+                setJoin();
+            }
         }
 
         if (other.gameObject.CompareTag("Coin"))
