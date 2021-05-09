@@ -88,7 +88,6 @@ public class CollisionCopyMovement : MonoBehaviour
 
             if (collidedPlayer == false && other.gameObject.name == "Dummy")
             {
-                Debug.Log("AAAAAAAAAAA");
                 dummyObj = other.gameObject;
                 collidedDummy = true;
                 setJoin();
