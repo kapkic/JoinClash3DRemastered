@@ -811,6 +811,10 @@ PrefabInstance:
       propertyPath: countText
       value: 
       objectReference: {fileID: 100608044}
+    - target: {fileID: 5315241920298646135, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e7ccefc9b6ca17a4495a14a9a88515b8, type: 2}
     - target: {fileID: 7255159853763129430, guid: d574e0c47be19fd459f3e59c98811c79, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1815,8 +1819,8 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Enabled
+    - target: {fileID: 8385054248514028806, guid: 4ea3dc20a8253d8488b994ede0610fbe, type: 3}
+      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

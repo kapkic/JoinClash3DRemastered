@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
 	private bool runbefore=true;
 	int timer;
 	public TextMeshProUGUI countText;
+	private Animator anim;
 
 	public BossHP hp2;
 
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
 		count = 0;
 
 		SetCountText();
+		anim=GetComponentInChildren<Animator>();
 		//winTextObject.SetActive(false);
 		//lossTextObject.SetActive(false);
 	}
@@ -102,9 +104,16 @@ public class PlayerController : MonoBehaviour
 		Vector3 movement = new Vector3(movementX, 0.0f, movementY);
 		rb.AddForce(movement * speed);
 		
+		if(rb.velocity.magnitude>1)   
+			anim.SetBool("isRunning", true);
+		else if(rb.velocity.magnitude<=1)   
+			anim.SetBool("isRunning", false);
+		
 		if (jump)
 		{
+			anim.SetTrigger("jumping");
 /*			timer++;
+			
             if (timer<5)
             {*/
                 Vector3 movement2 = new Vector3(0.0f, 600.0f, 50.0f);
