@@ -15,11 +15,14 @@ public class EnemyScript : MonoBehaviour
     private Vector3 dummyPos;
     private Vector3 myPos;
     private Vector3 myDir;
+	
+	private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         enemyArr = GameObject.FindGameObjectsWithTag("Enemy");
+		anim=GetComponentInChildren<Animator>();
 
         foreach (GameObject x in enemyArr)
         {
@@ -27,6 +30,7 @@ public class EnemyScript : MonoBehaviour
         }
         rb = GetComponent<Rigidbody>();
         collidedAlly = false;
+		
     }
 
 
@@ -36,6 +40,14 @@ public class EnemyScript : MonoBehaviour
         {
             enemyObj = collision.gameObject;
             Physics.IgnoreCollision(enemyObj.GetComponent<Collider>(), GetComponent<Collider>());
+        }
+		if (collision.gameObject.name == "Saw")
+        {
+			setDie();
+        }
+		if (collision.gameObject.name == "Block")
+        {
+			setDie();
         }
     }
 
@@ -48,6 +60,14 @@ public class EnemyScript : MonoBehaviour
             dummyObj = other.gameObject;
         }
     }
+	
+	void setDie()
+	{
+		//lossTextObject.SetActive(true);
+		Destroy(gameObject);
+		//if all dies
+		//setGameOver();
+	}
 
     private void FixedUpdate()
     {
@@ -59,5 +79,10 @@ public class EnemyScript : MonoBehaviour
             myDir.Normalize();
             rb.velocity = myDir * 2;
         }
+		
+		if(rb.velocity.magnitude>1)   
+			anim.SetBool("isRunning", true);
+		else if(rb.velocity.magnitude<=1)   
+			anim.SetBool("isRunning", false);
     }
 }

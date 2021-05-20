@@ -17,10 +17,24 @@ public class CollisionCopyMovement : MonoBehaviour
     private bool collidedPlayer;
     private bool collidedDummy;
     private bool collidedEnemy;
-
+	private bool jump;
+	private bool elem=true;
+	private bool active=false;
+	
     private Vector3 enemyPos;
     private Vector3 dummyPos;
     private Vector3 dummyDir;
+	
+	private Animator anim;
+	
+	public Transform boss;
+	public BossHP hp2;
+	
+	int moveSpeed = 4;
+	int maxDist = 3;
+	int minDist = 2;
+	
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +43,8 @@ public class CollisionCopyMovement : MonoBehaviour
         collidedPlayer = false;
         collidedDummy = false;
         collidedEnemy = false;
+		
+		anim=GetComponentInChildren<Animator>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -38,6 +54,18 @@ public class CollisionCopyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+		
+		if(rb.velocity.magnitude>1)   
+			anim.SetBool("isRunning", true);
+		else if(rb.velocity.magnitude<=1)   
+			anim.SetBool("isRunning", false);
+			
+		if (jump)
+		{
+			anim.SetTrigger("jumping");
+			jump=false;
+		}
+		
         if (collidedEnemy == true)
         {
             enemyPos = enemyObj.GetComponent<Rigidbody>().position;
@@ -97,9 +125,7 @@ public class CollisionCopyMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Coin"))
 		{
 			other.gameObject.SetActive(false);
-			//count++; increase total count
-			//SetCountText();
-			SoundManager.playCoinSound();
+			playerObj.GetComponent<PlayerController>().SetCountText();
 		}
 		else if (other.gameObject.CompareTag("Speed"))
 		{
@@ -108,9 +134,9 @@ public class CollisionCopyMovement : MonoBehaviour
 			SoundManager.playSpeedSound();
 
 		}
-		if (other.gameObject.CompareTag("Boss"))
+		if (other.gameObject.CompareTag("BossStep"))
         {
-			//setFight();
+			setFight();
         }
 		if (other.gameObject.CompareTag("Saw"))
         {
@@ -128,6 +154,12 @@ public class CollisionCopyMovement : MonoBehaviour
         {
 			setJoin();		
         }
+		
+		if (other.gameObject.CompareTag("Ramp"))
+        {
+			jump=true;
+        }
+		
 	}
 	
 	void setDie()
@@ -143,4 +175,46 @@ public class CollisionCopyMovement : MonoBehaviour
 	{
 			SoundManager.playJoinSound();
 	}
+	
+	void initFightOnce()
+    {
+		if (elem)
+		{
+        anim.SetBool("isFighting",true);
+		elem=false;
+		}
+    }
+	
+	void setFight()
+	{
+		active=true;
+	}
+
+	
+	void Update()
+    {
+	//	Debug.Log(Vector3.Distance(transform.position, Player.position));
+        if (active){
+		transform.LookAt(boss);
+			if (hp2.isActive())
+			{
+				if (Vector3.Distance(transform.position, boss.position) >= minDist)
+				 {
+					 transform.position += transform.forward * moveSpeed * Time.deltaTime;
+
+					 if (Vector3.Distance(transform.position, boss.position) <= maxDist)
+					 {
+						 initFightOnce();
+						 hp2.takeDamage(0.1f);
+						 //
+					 }
+				 }
+			}
+			else if (!elem)
+			{
+				anim.SetBool("isDancing",true);	
+			}
+		}
+    }
+	
 }

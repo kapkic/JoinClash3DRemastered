@@ -6,19 +6,22 @@ using UnityEngine.SceneManagement;
 public class BossHP : MonoBehaviour
 {
 	//hpbar
-	public const int maxHP= 100;
-	public int currentHP = maxHP;
+	public const float maxHP= 100;
+	public float currentHP = maxHP;
 	public RectTransform hpbar;
+	
+	public PlayerController Pl2;
+	
 	//hpbar
 	
-	//private Animator anim;
+	private Animator anim;
 	
 	//chase
 	public Transform Player;
 	int moveSpeed = 4;
-	int maxDist = 3;
-	int minDist = 1;
-	public static bool active=false;
+	float maxDist = 3;
+	float minDist = 1.5f;
+	public static bool active=false, elem=true;
 	private bool won;
 	
 	public static void setActive()
@@ -30,16 +33,25 @@ public class BossHP : MonoBehaviour
 		active=false;
 	}
 	
-	public void takeDamage(int amount)
+	public bool isActive()
+	{
+		return active;
+	}
+	
+	public void takeDamage(float amount)
 	{
 		currentHP-=amount;
 		if (currentHP<=0)
 		{
 			currentHP=0;
 			//status-dead, play death anim
-			//anim.SetTrigger("dead");
-			//stop controller
 			setInactive();
+			anim.SetBool("isFighting",false);
+			anim.SetTrigger("dead");
+			Pl2.setDance();
+			//stop controller
+			//setInactive();
+			
 			//switch to next level after 5 seconds.
 			Invoke("setWin", 3.0f);
 		}
@@ -60,8 +72,18 @@ public class BossHP : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //anim=GetComponentInChildren<Animator>();
+        anim=GetComponentInChildren<Animator>();
     }
+	
+	void initFightOnce()
+    {
+		if (elem)
+		{
+        anim.SetBool("isFighting",true);
+		elem=false;
+		}
+    }
+	
 
     // Update is called once per frame
     void Update()
@@ -75,7 +97,8 @@ public class BossHP : MonoBehaviour
 
              if (Vector3.Distance(transform.position, Player.position) <= maxDist)
              {
-//
+				 initFightOnce();
+				 //
              }
 		 }
 		}

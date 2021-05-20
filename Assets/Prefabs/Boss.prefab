@@ -382,10 +382,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 616917975271881937, guid: db2cd58ded616e74cb72091dae30d46e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fbcc1e6f3bbaea94f958049d1acaef76, type: 2}
     - target: {fileID: 919132149155446097, guid: db2cd58ded616e74cb72091dae30d46e, type: 3}
       propertyPath: m_Name
       value: trashmanModelNew
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: db2cd58ded616e74cb72091dae30d46e, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 98585528a2d51cb42b35edaec88d9165, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db2cd58ded616e74cb72091dae30d46e, type: 3}
 --- !u!4 &7564806670036821462 stripped

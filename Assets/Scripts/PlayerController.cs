@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 {
 	public float speed = 0;
 	//private bool join = false; 
-	private int count;
+	public int count;
 	private bool boost, won, jump,fighting;
 	private bool runbefore=true;
 	int timer;
@@ -19,6 +19,14 @@ public class PlayerController : MonoBehaviour
 	private Animator anim;
 
 	public BossHP hp2;
+	
+	public Transform boss;
+	
+	int moveSpeed = 4;
+	float maxDist = 4;
+	float minDist = 3.0f;
+	float hitDist = 3.5f;
+	
 
 	private Rigidbody rb;
 	private float movementX, movementY;
@@ -26,7 +34,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-		count = 0;
+		count = -1;
 
 		SetCountText();
 		anim=GetComponentInChildren<Animator>();
@@ -46,8 +54,9 @@ public class PlayerController : MonoBehaviour
 		
 	}
 
-	void SetCountText()
+	public void SetCountText()
     {
+		count++;
 		countText.text = count.ToString();
 		if (count > 4)
         {
@@ -144,7 +153,6 @@ public class PlayerController : MonoBehaviour
 		if(other.gameObject.CompareTag("Coin"))
 		{
 			other.gameObject.SetActive(false);
-			count++;
 			SetCountText();
 			SoundManager.playCoinSound();
 		}
@@ -186,13 +194,24 @@ public class PlayerController : MonoBehaviour
 		if (other.gameObject.CompareTag("WinStep"))
 		{
 		//won=true;
+		setDance();
 		Invoke("setWin", 5.0f);	
 		}
 	}
 	void setFight()
 	{
-		fighting=true;
 		
+		//disable controls
+		//play fighting animation
+		
+		fighting=true;
+		//	anim.SetBool("isFighting", false);
+		
+	}
+	
+	public void setDance(){
+		anim.SetBool("isDancing", true);
+		fighting=false;
 	}
 
 
@@ -205,7 +224,29 @@ public class PlayerController : MonoBehaviour
 		//can make it a separate script.
 	if (fighting)
 	{
-		hp2.takeDamage(1);
+		transform.LookAt(boss);
+		if (Vector3.Distance(transform.position, boss.position) >= minDist)
+         {
+             transform.position += transform.forward * moveSpeed * Time.deltaTime;
+
+             if (Vector3.Distance(transform.position, boss.position) <= maxDist)
+             {
+				 //anim.SetBool("isFighting", true);
+				 //hp2.takeDamage(0.1f);
+				 //initFightOnce();
+				 //
+             }
+		 Debug.Log(Vector3.Distance(transform.position, boss.position));
+		 }
+		if (Vector3.Distance(transform.position, boss.position) <= hitDist)
+             {
+				 anim.SetBool("isFighting", true);
+				 hp2.takeDamage(0.05f);
+				 //initFightOnce();
+				 //
+             } 
+		
+		//hp2.takeDamage(0.1f);
 		//fighting=false;
 	}
 	
