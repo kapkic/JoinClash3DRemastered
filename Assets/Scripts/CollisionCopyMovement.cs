@@ -18,7 +18,7 @@ public class CollisionCopyMovement : MonoBehaviour
     private bool collidedDummy;
     private bool collidedEnemy;
 	private bool jump;
-	private bool elem=true;
+	private bool elem=true, alive=true;
 	private bool active=false;
 	
     private Vector3 enemyPos;
@@ -54,7 +54,8 @@ public class CollisionCopyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-		
+		if (alive)
+		{
 		if(rb.velocity.magnitude>1)   
 			anim.SetBool("isRunning", true);
 		else if(rb.velocity.magnitude<=1)   
@@ -93,6 +94,7 @@ public class CollisionCopyMovement : MonoBehaviour
                 GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
             }
         }
+		}
     }
 
     void OnTriggerEnter(Collider other)
@@ -140,15 +142,20 @@ public class CollisionCopyMovement : MonoBehaviour
         }
 		if (other.gameObject.CompareTag("Saw"))
         {
-			setDie();
+			alive=false;
+			anim.SetTrigger("dead");
+			Invoke("setDie", 2);
         }
 		if (other.gameObject.CompareTag("Block"))
         {
-			setDie();
+			alive=false;
+			anim.SetTrigger("dead");
+			Invoke("setDie", 2);
         }
 		if (other.gameObject.CompareTag("Enemy"))
         {
-			//setDie();
+			Invoke("setDieAnim", 1);
+
         }
 		if (other.gameObject.CompareTag("Dummy"))
         {
@@ -162,9 +169,15 @@ public class CollisionCopyMovement : MonoBehaviour
 		
 	}
 	
+	void setDieAnim(){
+			alive=false;
+			anim.SetTrigger("dead");
+			Invoke("setDie", 2);
+	}
 	void setDie()
 	{
 		//lossTextObject.SetActive(true);
+		//wait 3 seconds
 		SoundManager.playPopSound();
 		Destroy(gameObject);
 		//if all dies

@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
 			
             if (timer<5)
             {*/
-                Vector3 movement2 = new Vector3(0.0f, 600.0f, 50.0f);
+                Vector3 movement2 = new Vector3(0.0f, 400.0f, 5.0f);
 				rb.AddForce(movement2);
             /*}
 			timer=0;*/

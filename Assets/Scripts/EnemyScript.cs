@@ -10,7 +10,7 @@ public class EnemyScript : MonoBehaviour
 
     private Rigidbody rb;
 
-    private bool collidedAlly;
+    private bool collidedAlly, alive=true;
 
     private Vector3 dummyPos;
     private Vector3 myPos;
@@ -40,6 +40,7 @@ public class EnemyScript : MonoBehaviour
         {
             enemyObj = collision.gameObject;
             Physics.IgnoreCollision(enemyObj.GetComponent<Collider>(), GetComponent<Collider>());
+			
         }
 		if (collision.gameObject.name == "Saw")
         {
@@ -58,6 +59,8 @@ public class EnemyScript : MonoBehaviour
             GetComponent<BoxCollider>().enabled = false;
             collidedAlly = true;
             dummyObj = other.gameObject;
+			
+			Invoke("setDieAnim", 1);
         }
     }
 	
@@ -68,9 +71,18 @@ public class EnemyScript : MonoBehaviour
 		//if all dies
 		//setGameOver();
 	}
+	
+	void setDieAnim()
+	{
+		alive=false;
+		anim.SetTrigger("dead");
+		Invoke("setDie", 2);
+	}
 
     private void FixedUpdate()
     {
+		if (alive)
+		{
         if (collidedAlly == true)
         {
             dummyPos = dummyObj.GetComponent<Rigidbody>().position;
@@ -85,4 +97,5 @@ public class EnemyScript : MonoBehaviour
 		else if(rb.velocity.magnitude<=1)   
 			anim.SetBool("isRunning", false);
     }
+	}
 }
