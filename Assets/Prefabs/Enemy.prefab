@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 741481984883312188}
   - component: {fileID: 9152634175059110718}
   - component: {fileID: 8269236607826049711}
-  - component: {fileID: 956102008}
   - component: {fileID: 956102007}
   - component: {fileID: 7374250918671639075}
+  - component: {fileID: 2105623436}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -66,19 +66,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: -0.1}
---- !u!65 &956102008
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4537390083434750159}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 10, y: 2, z: 5}
-  m_Center: {x: 0, y: 0.8, z: -2}
 --- !u!114 &956102007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,6 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ef7490cf956fd4d9c8b8c543efe474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dummyObj: {fileID: 0}
+  ccm: {fileID: 0}
+  taken: 0
 --- !u!135 &7374250918671639075
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -104,6 +94,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2105623436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537390083434750159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ef7490cf956fd4d9c8b8c543efe474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dummyObj: {fileID: 0}
+  ccm: {fileID: 0}
+  taken: 0
 --- !u!1001 &18262852330469612
 PrefabInstance:
   m_ObjectHideFlags: 0

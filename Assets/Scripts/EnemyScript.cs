@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyScript : MonoBehaviour
 {
     private GameObject[] enemyArr;
+    private GameObject[] dummyArr;
     private GameObject enemyObj;
     public GameObject dummyObj;
 
@@ -13,6 +14,7 @@ public class EnemyScript : MonoBehaviour
     private bool collidedAlly, alive=true;
 
     private Vector3 dummyPos;
+    private Vector3 dummyDir;
     private Vector3 myPos;
     private Vector3 myDir;
 	
@@ -37,6 +39,10 @@ public class EnemyScript : MonoBehaviour
     {
         enemyArr = GameObject.FindGameObjectsWithTag("Enemy");
 		anim=GetComponentInChildren<Animator>();
+
+
+
+        //dummyArr = GameObject.FindGameObjectsWithTag("Dummy");
 
         foreach (GameObject x in enemyArr)
         {
@@ -68,20 +74,40 @@ public class EnemyScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+      
         if (other.gameObject.name == "Dummy")
         {
-			ccm=other.gameObject.GetComponent<CollisionCopyMovement>();
-			if (!ccm.isTaken())
-			{
-			
-			ccm.setTaken();
-			taken=true;
             GetComponent<SphereCollider>().enabled = false;
+            myPos = rb.position;
+            float min = 99999;
+            float temp;
+            dummyArr = other.gameObject.GetComponent<CollisionCopyMovement>().dummyArr;
+            foreach (GameObject x in dummyArr)
+            {
+                if(x != null)
+                {
+                    temp = Mathf.Abs(myPos.z) - Mathf.Abs(x.GetComponent<Rigidbody>().position.z);
+                    if (temp < min)
+                        dummyObj = x;
+                }
+               
+            }
+            
+            //Invoke("setDieAnim", 1);
             collidedAlly = true;
-            dummyObj = other.gameObject;
-			Debug.Log("Enemy collider disabled, " +  dummyObj);
-			Invoke("setDieAnim", 1);
-			}
+            
+            //ccm =other.gameObject.GetComponent<CollisionCopyMovement>();
+            //if (!ccm.isTaken())
+            //{
+
+            //ccm.setTaken();
+            //taken=true;
+
+            
+            //dummyObj = other.gameObject;
+			//Debug.Log("Enemy collider disabled, " +  dummyObj);
+			
+			
         }
     }
 	
@@ -104,16 +130,22 @@ public class EnemyScript : MonoBehaviour
     {
 		if (alive)
 		{
-        if (collidedAlly == true)
-        {
-            dummyPos = dummyObj.GetComponent<Rigidbody>().position;
-            myPos = rb.position;
-            myDir = dummyPos - myPos;
-            myDir.Normalize();
-            rb.velocity = myDir * 2;
-        }
-		
-		if(rb.velocity.magnitude>1)   
+
+            if (collidedAlly == true)
+            {
+                dummyPos = dummyObj.GetComponent<Rigidbody>().position;
+                myPos = rb.position;
+                myDir = dummyPos - myPos;
+                dummyDir = myPos - dummyPos;
+                myDir.Normalize();
+                myDir.z = myDir.z * -1;
+                dummyDir.Normalize();
+                rb.velocity = myDir * 2;
+                dummyObj.GetComponent<Rigidbody>().velocity = dummyDir * 2;
+                Invoke("setDieAnim", 1);
+            }
+
+            if (rb.velocity.magnitude>1)   
 			anim.SetBool("isRunning", true);
 		else if(rb.velocity.magnitude<=1)   
 			anim.SetBool("isRunning", false);

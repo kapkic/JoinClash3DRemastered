@@ -11,7 +11,8 @@ public class CollisionCopyMovement : MonoBehaviour
 
     private Rigidbody rb;
 
-    private GameObject dummyObj;
+	public GameObject[] dummyArr;
+	private GameObject dummyObj;
     private GameObject enemyObj;
 
     private bool collidedPlayer;
@@ -54,8 +55,10 @@ public class CollisionCopyMovement : MonoBehaviour
         collidedPlayer = false;
         collidedDummy = false;
         collidedEnemy = false;
-		
-		anim=GetComponentInChildren<Animator>();
+
+		dummyArr = GameObject.FindGameObjectsWithTag("Dummy");
+
+		anim = GetComponentInChildren<Animator>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -84,11 +87,6 @@ public class CollisionCopyMovement : MonoBehaviour
 			//if (!other.gameObject.GetComponent<EnemyScript>().isTaken())
 			//{
 			//other.gameObject.GetComponent<EnemyScript>().setTaken();
-            enemyPos = enemyObj.GetComponent<Rigidbody>().position;
-            dummyPos = rb.position;
-            dummyDir = enemyPos - dummyPos;
-            dummyDir.Normalize();
-            rb.velocity = dummyDir * 2;
 			//}
 			
         }
@@ -101,23 +99,27 @@ public class CollisionCopyMovement : MonoBehaviour
         }
         else if (collidedDummy == true)
         {	Color a,b;
-			if(playerActivated)
-			{
-            rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
-			dummyObj.GetComponent<CollisionCopyMovement>().setplayerActivated();
-			}
-			else
-			{
-			rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
-			}
+			if(dummyObj != null)
+                {
+					if (dummyObj.GetComponent<CollisionCopyMovement>().playerActivated)
+					{
+						rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
+						dummyObj.GetComponent<CollisionCopyMovement>().setplayerActivated();
+					}
+					else
+					{
+						rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
+					}
+
+					a = GetComponentInChildren<SkinnedMeshRenderer>().material.color;
+					b = dummyObj.GetComponentInChildren<SkinnedMeshRenderer>().material.color;
+
+					if (!a.Equals(b))
+					{
+						GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
+					}
+				}
 			
-            a = GetComponentInChildren<SkinnedMeshRenderer>().material.color;
-            b = dummyObj.GetComponentInChildren<SkinnedMeshRenderer>().material.color;
-			
-            if (!a.Equals(b))
-            {
-                GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
-            }
 			
         }
 		}
@@ -149,9 +151,16 @@ public class CollisionCopyMovement : MonoBehaviour
 
             if (collidedPlayer == false && other.gameObject.name == "Dummy")
             {
-                dummyObj = other.gameObject;
-                collidedDummy = true;
-                setJoin();
+				
+					dummyObj = other.gameObject;
+					if(dummyObj != null)
+                {
+					collidedDummy = true;
+					setJoin();
+				}
+					
+				
+					
             }
         }
 
@@ -212,6 +221,7 @@ public class CollisionCopyMovement : MonoBehaviour
 		//wait 3 seconds
 		SoundManager.playPopSound();
 		Destroy(gameObject);
+		dummyArr = GameObject.FindGameObjectsWithTag("Dummy");
 		//if all dies
 		//setGameOver();
 	}
