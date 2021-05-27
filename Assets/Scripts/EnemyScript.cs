@@ -6,7 +6,7 @@ public class EnemyScript : MonoBehaviour
 {
     private GameObject[] enemyArr;
     private GameObject enemyObj;
-    private GameObject dummyObj;
+    public GameObject dummyObj;
 
     private Rigidbody rb;
 
@@ -17,6 +17,20 @@ public class EnemyScript : MonoBehaviour
     private Vector3 myDir;
 	
 	private Animator anim;
+	
+	public CollisionCopyMovement ccm;
+	public bool taken=false;
+
+
+	public bool isTaken()
+	{
+	return taken;
+	}
+	
+	public void setTaken()
+	{
+	taken=true;
+	}
 
     // Start is called before the first frame update
     void Start()
@@ -56,11 +70,18 @@ public class EnemyScript : MonoBehaviour
     {
         if (other.gameObject.name == "Dummy")
         {
-            GetComponent<BoxCollider>().enabled = false;
+			ccm=other.gameObject.GetComponent<CollisionCopyMovement>();
+			if (!ccm.isTaken())
+			{
+			
+			ccm.setTaken();
+			taken=true;
+            GetComponent<SphereCollider>().enabled = false;
             collidedAlly = true;
             dummyObj = other.gameObject;
-			
+			Debug.Log("Enemy collider disabled, " +  dummyObj);
 			Invoke("setDieAnim", 1);
+			}
         }
     }
 	

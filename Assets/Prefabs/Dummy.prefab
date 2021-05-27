@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1685677763695449531}
   - component: {fileID: -2962753415832880547}
   - component: {fileID: 4013022728632844142}
+  - component: {fileID: 6954037243957154801}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Dummy
@@ -79,6 +80,23 @@ MonoBehaviour:
   playerObj: {fileID: 0}
   blue: {fileID: 2100000, guid: 6952236966c64f34bbce72faddaf0c27, type: 2}
   empty: {fileID: 2100000, guid: 25ba3c9c2df1ec44fba32965bf51ded9, type: 2}
+  taken: 0
+  playerActivated: 0
+  boss: {fileID: 0}
+  hp2: {fileID: 0}
+--- !u!65 &6954037243957154801
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7216952331485287834}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 1.5, z: 1.5}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1001 &9130195340964522473
 PrefabInstance:
   m_ObjectHideFlags: 0

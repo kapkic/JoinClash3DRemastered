@@ -21,6 +21,9 @@ public class CollisionCopyMovement : MonoBehaviour
 	private bool elem=true, alive=true;
 	private bool active=false;
 	
+	public bool taken=false;
+	public bool playerActivated=false;
+	
     private Vector3 enemyPos;
     private Vector3 dummyPos;
     private Vector3 dummyDir;
@@ -35,7 +38,15 @@ public class CollisionCopyMovement : MonoBehaviour
 	int minDist = 2;
 	
 
-
+	public bool isTaken()
+	{
+	return taken;
+	}
+	
+	public void setTaken()
+	{
+	taken=true;
+	}
     // Start is called before the first frame update
     void Start()
     {
@@ -69,33 +80,53 @@ public class CollisionCopyMovement : MonoBehaviour
 		
         if (collidedEnemy == true)
         {
+			
+			//if (!other.gameObject.GetComponent<EnemyScript>().isTaken())
+			//{
+			//other.gameObject.GetComponent<EnemyScript>().setTaken();
             enemyPos = enemyObj.GetComponent<Rigidbody>().position;
             dummyPos = rb.position;
             dummyDir = enemyPos - dummyPos;
             dummyDir.Normalize();
             rb.velocity = dummyDir * 2;
+			//}
+			
         }
 
         if (collidedPlayer == true)
         {
             rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
             GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
+			playerActivated=true;
         }
         else if (collidedDummy == true)
-        {
-            Color a,b;
-            rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
-
+        {	Color a,b;
+			if(playerActivated)
+			{
+            rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
+			dummyObj.GetComponent<CollisionCopyMovement>().setplayerActivated();
+			}
+			else
+			{
+			rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
+			}
+			
             a = GetComponentInChildren<SkinnedMeshRenderer>().material.color;
             b = dummyObj.GetComponentInChildren<SkinnedMeshRenderer>().material.color;
-
+			
             if (!a.Equals(b))
             {
                 GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
             }
+			
         }
 		}
     }
+	
+	public void setplayerActivated()
+	{
+		playerActivated=true;
+	}
 
     void OnTriggerEnter(Collider other)
 	{
@@ -154,6 +185,7 @@ public class CollisionCopyMovement : MonoBehaviour
         }
 		if (other.gameObject.CompareTag("Enemy"))
         {
+			//if (!other.gameObject.GetComponent<EnemyScript>().isTaken())
 			Invoke("setDieAnim", 1);
 
         }
