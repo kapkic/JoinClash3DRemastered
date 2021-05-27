@@ -11,12 +11,16 @@ public class CollisionCopyMovement : MonoBehaviour
 
     private Rigidbody rb;
 
-    private GameObject dummyObj;
+    private GameObject friendDummyObj;
+    private GameObject neutralDummyObj;
     private GameObject enemyObj;
 
     private bool collidedPlayer;
-    private bool collidedDummy;
+    private bool collidedFriend;
     private bool collidedEnemy;
+    private bool collidedNeutral;
+    public bool isFriend;
+    public bool isNeutral;
 
     private Vector3 enemyPos;
     private Vector3 dummyPos;
@@ -26,19 +30,21 @@ public class CollisionCopyMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        collidedPlayer = false;
-        collidedDummy = false;
         collidedEnemy = false;
+        isFriend = false;
+        isNeutral = true;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-       
+
+
+
     }
 
     private void FixedUpdate()
     {
-        if (collidedEnemy == true)
+        if (collidedEnemy)
         {
             enemyPos = enemyObj.GetComponent<Rigidbody>().position;
             dummyPos = rb.position;
@@ -47,100 +53,68 @@ public class CollisionCopyMovement : MonoBehaviour
             rb.velocity = dummyDir * 2;
         }
 
-        if (collidedPlayer == true)
+        if (collidedPlayer)
         {
             rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
             GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
         }
-        else if (collidedDummy == true)
+
+        if (collidedFriend)
         {
-            Color a,b;
-            rb.velocity = dummyObj.GetComponent<Rigidbody>().velocity;
+            // Color a,b;
+            // rb.velocity = friendDummyObj.GetComponent<Rigidbody>().velocity;
+            rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
 
-            a = GetComponentInChildren<SkinnedMeshRenderer>().material.color;
-            b = dummyObj.GetComponentInChildren<SkinnedMeshRenderer>().material.color;
+            //  a = GetComponentInChildren<SkinnedMeshRenderer>().material.color;
+            //  b = dummyObj.GetComponentInChildren<SkinnedMeshRenderer>().material.color;
 
-            if (!a.Equals(b))
-            {
-                GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
-            }
+            // if (!a.Equals(b))
+            //{
+            GetComponentInChildren<SkinnedMeshRenderer>().material = blue;
+            // }
+        }
+
+        if (collidedNeutral)
+        {
+            rb.velocity = neutralDummyObj.GetComponent<Rigidbody>().velocity;
         }
     }
 
     void OnTriggerEnter(Collider other)
-	{
+    {
         if (other.gameObject.name == "Enemy")
         {
             collidedEnemy = true;
             collidedPlayer = false;
-            collidedDummy = false;
+            collidedFriend = false;
+            collidedNeutral = false;
             enemyObj = other.gameObject;
         }
 
-        if (collidedEnemy == false)
+        if (!collidedEnemy)
         {
             if (other.gameObject.name == "Player")
             {
                 collidedPlayer = true;
-                collidedDummy = false;
-                setJoin();
+                isFriend = true;
+                collidedFriend = false;
+                collidedNeutral = false;
             }
 
-            if (collidedPlayer == false && other.gameObject.name == "Dummy")
+            if (collidedPlayer == false && other.gameObject.name == "Dummy" && other.gameObject.GetComponent<CollisionCopyMovement>().isFriend)
             {
-                dummyObj = other.gameObject;
-                collidedDummy = true;
-                setJoin();
+                friendDummyObj = other.gameObject;
+                collidedFriend = true;
+                collidedNeutral = false;
+                isFriend = true;
+            }
+
+            if (collidedPlayer == false && !collidedFriend && other.gameObject.name == "Dummy" && !other.gameObject.GetComponent<CollisionCopyMovement>().isFriend)
+            {
+                neutralDummyObj = other.gameObject;
+                collidedNeutral = true;
             }
         }
 
-        if (other.gameObject.CompareTag("Coin"))
-		{
-			other.gameObject.SetActive(false);
-			//count++; increase total count
-			//SetCountText();
-			SoundManager.playCoinSound();
-		}
-		else if (other.gameObject.CompareTag("Speed"))
-		{
-			other.gameObject.SetActive(false);
-			//speed += 10; increase total speed
-			SoundManager.playSpeedSound();
-
-		}
-		if (other.gameObject.CompareTag("Boss"))
-        {
-			//setFight();
-        }
-		if (other.gameObject.CompareTag("Saw"))
-        {
-			setDie();
-        }
-		if (other.gameObject.CompareTag("Block"))
-        {
-			setDie();
-        }
-		if (other.gameObject.CompareTag("Enemy"))
-        {
-			//setDie();
-        }
-		if (other.gameObject.CompareTag("Dummy"))
-        {
-			setJoin();		
-        }
-	}
-	
-	void setDie()
-	{
-		//lossTextObject.SetActive(true);
-		SoundManager.playPopSound();
-		Destroy(gameObject);
-		//if all dies
-		//setGameOver();
-	}
-	
-	private void setJoin()
-	{
-			SoundManager.playJoinSound();
-	}
+    }
 }
