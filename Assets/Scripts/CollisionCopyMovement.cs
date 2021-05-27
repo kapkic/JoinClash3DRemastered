@@ -63,8 +63,13 @@ public class CollisionCopyMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-       
-    }
+		if (collision.gameObject.CompareTag("Saw"))
+		{
+			alive = false;
+			anim.SetTrigger("dead");
+			Invoke("setDie", 2);
+		}
+	}
 
     private void FixedUpdate()
     {
@@ -83,7 +88,6 @@ public class CollisionCopyMovement : MonoBehaviour
 		
         if (collidedEnemy == true)
         {
-			
 			//if (!other.gameObject.GetComponent<EnemyScript>().isTaken())
 			//{
 			//other.gameObject.GetComponent<EnemyScript>().setTaken();
@@ -104,7 +108,8 @@ public class CollisionCopyMovement : MonoBehaviour
 					if (dummyObj.GetComponent<CollisionCopyMovement>().playerActivated)
 					{
 						rb.velocity = playerObj.GetComponent<Rigidbody>().velocity;
-						dummyObj.GetComponent<CollisionCopyMovement>().setplayerActivated();
+						//dummyObj.GetComponent<CollisionCopyMovement>().setplayerActivated();
+						setplayerActivated();
 					}
 					else
 					{
@@ -152,8 +157,8 @@ public class CollisionCopyMovement : MonoBehaviour
             if (collidedPlayer == false && other.gameObject.name == "Dummy")
             {
 				
-					dummyObj = other.gameObject;
-					if(dummyObj != null)
+				dummyObj = other.gameObject;
+				if(dummyObj != null)
                 {
 					collidedDummy = true;
 					setJoin();
@@ -180,12 +185,7 @@ public class CollisionCopyMovement : MonoBehaviour
         {
 			setFight();
         }
-		if (other.gameObject.CompareTag("Saw"))
-        {
-			alive=false;
-			anim.SetTrigger("dead");
-			Invoke("setDie", 2);
-        }
+		
 		if (other.gameObject.CompareTag("Block"))
         {
 			alive=false;

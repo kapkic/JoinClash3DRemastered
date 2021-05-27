@@ -81,18 +81,34 @@ public class EnemyScript : MonoBehaviour
             myPos = rb.position;
             float min = 99999;
             float temp;
+            int dummyIndex = 0;
             dummyArr = other.gameObject.GetComponent<CollisionCopyMovement>().dummyArr;
-            foreach (GameObject x in dummyArr)
+            for (int i = 0; i < dummyArr.Length; i++)
             {
-                if(x != null)
+                
+                if(dummyArr[i] != null)
                 {
-                    temp = Mathf.Abs(myPos.z) - Mathf.Abs(x.GetComponent<Rigidbody>().position.z);
+                    if (dummyArr[i].gameObject.GetComponent<CollisionCopyMovement>().isTaken())
+                    {
+                        continue;
+                    }
+                    //temp = Mathf.Abs(myPos.z) - Mathf.Abs(x.GetComponent<Rigidbody>().position.z);
+                    temp = Vector3.Distance(myPos, dummyArr[i].GetComponent<Rigidbody>().position);
                     if (temp < min)
-                        dummyObj = x;
+                    {
+                        dummyIndex = i;
+                        min = temp;
+                    }
+                       
                 }
                
             }
+            if(dummyArr[dummyIndex] != null)
+            {
+                dummyArr[dummyIndex].GetComponent<CollisionCopyMovement>().setTaken();
+            }
             
+            dummyObj = dummyArr[dummyIndex];
             //Invoke("setDieAnim", 1);
             collidedAlly = true;
             
@@ -128,17 +144,21 @@ public class EnemyScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+       
 		if (alive)
 		{
-
             if (collidedAlly == true)
             {
+                Debug.Log(dummyObj + "inside collided ally");
                 dummyPos = dummyObj.GetComponent<Rigidbody>().position;
                 myPos = rb.position;
-                myDir = dummyPos - myPos;
-                dummyDir = myPos - dummyPos;
+                //myDir = dummyPos - myPos;
+                myDir = Vector3.MoveTowards(myPos, dummyPos, 100);
+                //dummyDir = myPos - dummyPos;
+                dummyDir = Vector3.MoveTowards(dummyPos, myPos, 100);
                 myDir.Normalize();
                 myDir.z = myDir.z * -1;
+                myDir.x = myDir.x * -1;
                 dummyDir.Normalize();
                 rb.velocity = myDir * 2;
                 dummyObj.GetComponent<Rigidbody>().velocity = dummyDir * 2;
