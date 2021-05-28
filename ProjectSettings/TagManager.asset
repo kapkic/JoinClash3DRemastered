@@ -3,7 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Coin
+  - Enemy
+  - Ally
+  - Boss
+  - Block
+  - Saw
+  - Speed
+  - Ramp
+  - Dummy
+  - BossStep
+  - WinStep
   layers:
   - Default
   - TransparentFX
