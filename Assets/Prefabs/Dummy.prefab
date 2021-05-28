@@ -57,7 +57,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7216952331485287834}
   serializedVersion: 2
-  m_Mass: 0.1
+  m_Mass: 0.001
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -80,6 +80,7 @@ MonoBehaviour:
   playerObj: {fileID: 0}
   blue: {fileID: 2100000, guid: 6952236966c64f34bbce72faddaf0c27, type: 2}
   empty: {fileID: 2100000, guid: 25ba3c9c2df1ec44fba32965bf51ded9, type: 2}
+  dummyArr: []
   taken: 0
   playerActivated: 0
   boss: {fileID: 0}

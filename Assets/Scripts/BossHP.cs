@@ -63,6 +63,7 @@ public class BossHP : MonoBehaviour
 	SoundManager.playWinSound();
 	Scene scene = SceneManager.GetActiveScene();
 	won=false;
+	elem=true;
 	if (scene.name == "Level2")
 	SceneManager.LoadScene("Level3");
 	else if (scene.name == "Level3"){}

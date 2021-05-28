@@ -150,6 +150,8 @@ public class EnemyScript : MonoBehaviour
             if (collidedAlly == true)
             {
                 Debug.Log(dummyObj + "inside collided ally");
+				if (dummyObj!=null)
+				{
                 dummyPos = dummyObj.GetComponent<Rigidbody>().position;
                 myPos = rb.position;
                 //myDir = dummyPos - myPos;
@@ -162,6 +164,7 @@ public class EnemyScript : MonoBehaviour
                 dummyDir.Normalize();
                 rb.velocity = myDir * 2;
                 dummyObj.GetComponent<Rigidbody>().velocity = dummyDir * 2;
+				}
                 Invoke("setDieAnim", 1);
             }
 
