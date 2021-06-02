@@ -7,10 +7,11 @@ A clone of JoinClash 3D.
 
 Devteam:<br>
 - [Sadr-Ahmet](https://gitlab.com/kapkic)<br>
-- [Ali](https://gitlab.com/mungui)<br>
 - [Ata](https://gitlab.com/ImperfectTortoise)<br>
 - [Görkem](https://gitlab.com/gorkemkaleli)<br>
 
+Arts Team:<br>
+- [Ali](https://gitlab.com/mungui)<br>
 
 Story Writers:<br>
 - [Tugay](https://www.youtube.com/watch?v=civuoU_NE38)<br>
